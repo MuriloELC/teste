@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso - Sicoob</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { display: flex; }
+        .sidebar { width: 250px; padding: 20px; background: #ddd; }
+        .video-section { flex: 1; padding: 20px; text-align: center; }
+        .video-container { width: 100%; max-width: 800px; margin: auto; }
+        .controls { margin-top: 10px; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+    </style>
+    <script>
+        function loadVideo(url) {
+            document.getElementById("videoFrame").src = url;
+        }
+
+        function navigate(videoId, direction) {
+            window.location.href = "VideoServlet?id=" + videoId + "&action=" + direction;
+        }
+    </script>
+</head>
+<body>
+    <h1>Sicoob Instituto - Curso</h1>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Aulas</h2>
+            <ul>
+                <%-- Lista de vídeos gerada dinamicamente --%>
+                <c:forEach var="video" items="${videos}">
+                    <li>
+                        <button onclick="loadVideo('${video.url}')">${video.titulo}</button>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+
+        <div class="video-section">
+            <h2 id="videoTitle">${videoAtual.titulo}</h2>
+            <div class="video-container">
+                <iframe id="videoFrame" width="800" height="450" 
+                        src="${videoAtual.url}" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="controls">
+                <button onclick="navigate(${videoAtual.id}, 'prev')">Retornar</button>
+                <button onclick="navigate(${videoAtual.id}, 'next')">Avançar</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
